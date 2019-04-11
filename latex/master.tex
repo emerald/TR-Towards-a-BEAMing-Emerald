@@ -1,0 +1,52 @@
+\documentclass[a4paper]{article}
+
+\usepackage{template}
+
+\usepackage{csquotes}
+\usepackage[defernumbers=true]{biblatex}
+
+% Be more permissive about line breaks in URLs in the bibliography:
+% Credit: https://tex.stackexchange.com/a/134281
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
+\DeclareBibliographyCategory{formally-peer-reviewed}
+\addtocategory{formally-peer-reviewed}{%
+  emerald:tse:1987,%
+}
+
+\addbibresource{references.bib}
+
+\usepackage[numbib]{tocbibind}
+
+\header{%
+  course={Technical Report},%
+  assignment={Towards a BEAMing Emerald},%
+  authors={Oleks Shturmov \texttt{<\href{mailto:oleks@oleks.info}{oleks@oleks.info}>}},%
+  affiliation={Department of Informatics\\University of Oslo},%
+  shortAffiliation={IFI/UiO},%
+  date={April 23, 2019}
+}
+
+\newcommand\tm[0]{\textsuperscript{\scriptsize\texttrademark}}
+\newcommand\longref[1]{\ref{#1} (page \pageref{#1})}
+
+\usepackage{etoolbox}
+
+\begin{document}
+
+\maketitle
+
+\cite{emerald:tse:1987}
+
+\section*{References}
+
+\nocite{*}
+
+\printbibliography[%
+  title={Formally Peer-Reviewed},%
+  category=formally-peer-reviewed,%
+  heading=subbibliography%
+]
+
+\end{document}
