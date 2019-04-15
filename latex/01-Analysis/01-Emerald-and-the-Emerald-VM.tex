@@ -5,7 +5,16 @@ early 1980s, in an academic effort to address the challenge of
 programming distributed systems. This effort culminated in numerous
 academic publications\cite{emerald:tse:1987, emerald:tocs:1988,
 emerald:spe:1991} and PhD theses\cite{emerald:phd:norman-c-hutchinson,
-emerald:phd:eric-jul, emerald:phd:niels-christian-juul}. However, over
-time, Emerald has gained practically no ground as the programming
-language of choice for distributed systems enthusiasts and
-professionals.
+emerald:phd:eric-jul, emerald:phd:niels-christian-juul}. However,
+Emerald has gained little ground as a programming language --- it
+remains only narrowly used in small, academic circles. As such, the
+elements of the Emerald programming environment are sometimes flaky,
+and only piecewise well-documented.
+
+Emerald programs are compiled into bytecode for an Emerald-specific
+virtual machine (also called a ``kernel''\cite{emerald:phd:eric-jul}).
+The Emerald VM was crafted around the same time as Emerald itself.
+Unlike the Emerald programming model, it has received less academic
+scrutiny. Chances are, the Emerald VM is severely outdated, and it is
+no match for a more modern VM targeting distributed systems. This
+claim is investigated throughout the rest of this report.
