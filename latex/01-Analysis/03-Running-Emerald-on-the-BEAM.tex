@@ -1,0 +1,54 @@
+\section{Running Emerald on the BEAM}
+
+There are 4 principle ways in which we can get Emerald to run on the
+BEAM:
+
+\begin{description}[style=nextline]
+
+\item[Source-to-Source] \emph{Emerald source code is transpiled into a
+BEAM-compatible language.}
+
+The benefit of this approach is that it suffices to have a working
+understanding of Emerald and a BEAM-compatible language. It does not
+require a deeper understanding of the Emerald VM or BEAM.
+
+The down-side is that it \emph{may} prove hard to efficiently emulate
+the Emerald programming model in a BEAM-compatible language.
+Especially, if we do not \emph{also} have a deeper understanding of
+the Emerald VM and BEAM.
+
+\item[Source-to-Bytecode] \emph{Emerald source code is compiled into
+BEAM bytecode code.}
+
+The benefit of this approach is that it does not require a deeper
+understanding of the Emerald VM, and allows us to focus on low-level
+emulation of the Emerald programming model.
+
+The down-side is that it still requires an intricate understanding
+of the Emerald compiler, as well as the BEAM.
+
+\item[Bytecode-to-Source] \emph{Emerald bytecode is compiled into a
+BEAM-compatible language.}
+
+The benefit of this approach is that it does not require a deeper
+understanding of the Emerald compiler, merely the Emerald VM.
+Conversely, it does not require a deeper understanding of BEAM, merely
+a BEAM-compatible language.
+
+The down-side is that it makes an assumption that the Emerald VM is an
+efficient execution model for the Emerald programming model. This is
+not unreasonable assumption for the early 1980s, but \emph{may} be
+unreasonable today.
+
+\item[Bytecode-to-Bytecode] \emph{Emerald bytecode is compiled into
+BEAM bytecode.}
+
+The benefit of this approach is that it requires neither a deeper
+understanding of the Emerald programming language, nor a
+BEAM-compatible language.
+
+The down-side of this approach, other than the one mentioned directly
+above, is that it \emph{may} prove hard to efficiently map the Emerald
+VM execution model to BEAM bytecode.
+
+\end{description}
