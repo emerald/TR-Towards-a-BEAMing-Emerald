@@ -24,6 +24,11 @@
   emerald:phd:niels-christian-juul,%
 }
 
+\DeclareBibliographyCategory{manuals-and-techreports}
+\addtocategory{manuals-and-techreports}{%
+  erlang-otp:2019,%
+}
+
 \addbibresource{references.bib}
 
 \usepackage[numbib]{tocbibind}
@@ -61,6 +66,12 @@
 \printbibliography[%
   title={PhD Theses},%
   category=phd-theses,%
+  heading=subbibliography%
+]
+
+\printbibliography[%
+  title={Manuals \& Techreports},%
+  category=manuals-and-techreports,%
   heading=subbibliography%
 ]
 
