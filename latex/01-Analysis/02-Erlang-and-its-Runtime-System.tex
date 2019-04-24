@@ -35,6 +35,14 @@ in ill-predictable order. Both of these shortcomings however, can be
 partially addressed through an additional static analyser, called
 Dialyzer\cite{erlang:2019:Dialyzer}.
 
+Unlike in an ``object-based'' system, message-sends are asynchronous,
+and the messages received by an actor are first collected in the
+actor's \emph{inbox}. An actor can then inspect the messages in the
+inbox in a particular order: \emph{oldest message first}.  However,
+the actor may skip over messages it is not yet ready handle.  It is
+the programmer's responsibility to ensure that such messages are
+eventually handled; Erlang (without Dialyzer) does not enforce this.
+
 In terms of distribution, Erlang also boasts ``fine-grained mobility''
 and ``location transparency'', but in a slightly different way: (1)
 users must manage their messages \emph{explicitly}, and (2) it is the
