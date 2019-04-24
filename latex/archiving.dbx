@@ -1,0 +1,4 @@
+\DeclareDatamodelFields[type=field, datatype=date, skipout]{
+  webarchivedate,
+}
+\DeclareDatamodelEntryfields{webarchivedate}

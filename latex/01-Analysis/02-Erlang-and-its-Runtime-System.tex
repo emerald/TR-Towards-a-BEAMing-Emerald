@@ -1,19 +1,45 @@
-\section{Erlang and its Runtime System}
+\section{Erlang and its Runtime System(s)}
 
 Erlang is a general-purpose programming language, designed in the late
 1980s to early 1990s, in an industrial effort to improve the
-development environment for telephone switches. It was designed
-internally at Ericsson (a Swedish networking and telecommunications
-company), and open-sourced in 1998. Erlang boasts features in support
-for programming highly concurrent, distributed, fault-ridden systems.
-According to the 2019 TIOBE
+development environment for telephone switches\cite{erlang:hopl:2007}.
+It was designed internally at Ericsson (a networking and
+telecommunications company), and open-sourced in 1998. Erlang boasts
+features in support for programming highly concurrent, distributed,
+and faulty systems, which nevertheless are intended to ``run
+forever''.
+
+According to the April 2019 TIOBE
 Index\footnote{\url{https://web.archive.org/web/20190416025331/https://www.tiobe.com/tiobe-index/}},
 Erlang is today among the top-50 most popular programming languages.
+It is in use not only at
+Ericsson\cite{media:2018-03-31:Erlang-20-years}, but also at
+Klarna\cite{media:2015-01-09:Klarna-Engineering-Insights}\footnote{See
+also \url{https://github.com/klarna?language=erlang}} (an online
+payments processor),
+Riak\footnote{\url{https://github.com/basho/riak}} (an
+enterprise-grade, distributed NoSQL database), and perhaps more
+notoriously, at Facebook\cite{media:2008-03-13:facebook-chat}, and its
+subsidiary, WhatsApp\cite{media:2014-02-21:Inside-Erlang}.
 
-Erlang is a dynamically-typed, compiled, actor-based language. Erlang
-programs are composed of ``actors'' --- concurrently executing
-light-weight processes, that communicate with each other (almost)
-exclusively using messages.
+Erlang is a dynamically-typed, compiled, actor-based language. It is
+``actor-based'' in the sense that an Erlang program is composed of
+\emph{actors} --- concurrently executing light-weight processes, that
+communicate with each other (almost) exclusively using messages.
+
+Although the actions that an actor should take in response to a
+message are specified in a functional way, it is hard to call Erlang a
+``functional programming language'' --- the lifetime of an actor is
+governed by the messages it receives, and these are both dynamically
+typed, and arrive in an unpredictable order. Both of these
+shortcomings however, can be addressed by using an optional,
+additional static analyser called Dialyzer.
+
+In terms of distribution, Erlang also boasts ``fine-grained mobility''
+and ``location transparency'', but in a slightly different way: (1)
+users must manage their messages \emph{explicitly}, and (2) it is the
+location of an actor, not the location of an ``object'', which is
+transparent.
 
 The Erlang runtime system was built to support ``concurrency,
 distribution, and

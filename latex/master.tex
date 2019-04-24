@@ -3,7 +3,9 @@
 \usepackage{template}
 
 \usepackage{csquotes}
-\usepackage[defernumbers=true]{biblatex}
+
+\usepackage[defernumbers=true, datamodel=archiving]{biblatex}
+\input{archiving.lbx}
 
 % Be more permissive about line breaks in URLs in the bibliography:
 % Credit: https://tex.stackexchange.com/a/134281
@@ -15,6 +17,7 @@
   emerald:tse:1987,%
   emerald:tocs:1988,%
   emerald:spe:1991,%
+  erlang:hopl:2007,%
 }
 
 \DeclareBibliographyCategory{phd-theses}
@@ -27,6 +30,14 @@
 \DeclareBibliographyCategory{manuals-and-techreports}
 \addtocategory{manuals-and-techreports}{%
   erlang-otp:2019,%
+}
+
+\DeclareBibliographyCategory{media}
+\addtocategory{media}{%
+  media:2008-03-13:facebook-chat,%
+  media:2018-03-31:Erlang-20-years,%
+  media:2014-02-21:Inside-Erlang,%
+  media:2015-01-09:Klarna-Engineering-Insights,%
 }
 
 \addbibresource{references.bib}
@@ -72,6 +83,12 @@
 \printbibliography[%
   title={Manuals \& Techreports},%
   category=manuals-and-techreports,%
+  heading=subbibliography%
+]
+
+\printbibliography[%
+  title={Media},%
+  category=media,%
   heading=subbibliography%
 ]
 
