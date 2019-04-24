@@ -22,17 +22,18 @@ enterprise-grade, distributed NoSQL database), and perhaps more
 notoriously, at Facebook\cite{media:2008-03-13:facebook-chat}, and its
 subsidiary, WhatsApp\cite{media:2014-02-21:Inside-Erlang}.
 
-Erlang is a dynamically-typed, compiled, actor-based language. It is
-``actor-based'' in the sense that an Erlang program is composed of
-\emph{actors} --- concurrently executing light-weight processes, that
-communicate with each other (almost) exclusively using messages.
-Although the actions that an actor should take in response to a
-message are specified in a \emph{functional} way, it is hard to call
-Erlang a functional programming language --- the lifetime of an actor
-is governed by the messages it receives, and these are both
-dynamically typed, and arrive in ill-predictable order. Both of these
-shortcomings however, can be partially addressed through an additional
-static analyser, called Dialyzer\cite{erlang:2019:Dialyzer}.
+Erlang is a dynamically-typed, compiled, actor-based
+language\cite{erlang:2019:Erlang-OTP}. It is ``actor-based'' in the
+sense that an Erlang program is composed of \emph{actors} ---
+concurrently executing light-weight processes, that communicate with
+each other (almost) exclusively using messages.  Although the actions
+that an actor should take in response to a message are specified in a
+\emph{functional} way, it is hard to call Erlang a functional
+programming language --- the lifetime of an actor is governed by the
+messages it receives, and these are both dynamically typed, and arrive
+in ill-predictable order. Both of these shortcomings however, can be
+partially addressed through an additional static analyser, called
+Dialyzer\cite{erlang:2019:Dialyzer}.
 
 In terms of distribution, Erlang also boasts ``fine-grained mobility''
 and ``location transparency'', but in a slightly different way: (1)
