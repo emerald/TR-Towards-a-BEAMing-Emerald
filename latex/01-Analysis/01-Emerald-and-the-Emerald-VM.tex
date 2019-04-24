@@ -15,9 +15,11 @@ Emerald is a statically-typed, compiled, object-based language. It is
 ``object-based'' (and not ``object-oriented'') in the sense that
 (almost) everything is an object (as in Smalltalk), and it uses
 \emph{structural subtyping} (as in Go), rather than \emph{nominal
-subtyping} (as in Java or C\#). The Emerald type-system also boasts
-parametric polymorphism, and a hint of (compiled away) dependent
-types.
+subtyping} (as in Java or C\#). All communication in Emerald happens
+through method invocation, although objects may perform work
+concurrently on one, or many different machines. The Emerald
+type-system also boasts parametric polymorphism, and a hint of
+(compiled away) dependent types.
 
 The key distribution features of Emerald are \emph{fine-grained
 mobility} and \emph{location transparency}: (1) anything, from values
