@@ -50,6 +50,14 @@ location of an actor, not the location of an ``object'', which is
 transparent --- sending a message to a remote actor is syntactically
 indistinguishable from sending a message to a local actor.
 
-The Erlang runtime system was built to support ``concurrency,
-distribution, and
-fault-tolerance''\footnote{\url{https://web.archive.org/web/20190414185439/http://erlang.org/}}.
+The Erlang runtime system has seen several
+implementations\cite{erlang:2018:The-Erlang-Runtime-System}. The
+de-facto standard implementation today goes by the name Erlang/OTP,
+and is maintained in an open-source fashion\footnote{See
+\url{https://github.com/erlang/otp}}, supported by Ericsson.
+Erlang/OTP features a virtual machine called BEAM for executing
+Erlang. Despite Erlang's popularity, and despite an open-source
+development process, the internals of Erlang/OTP, and BEAM in
+particular, remain poorly documented. The best that I could find, is
+an incomplete community effort, separate from the development of
+Erlang/OTP itself: \url{https://github.com/happi/theBeamBook}.
