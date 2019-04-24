@@ -200,6 +200,11 @@
   \cfoot{\thepage/\pageref*{LastPage}}%
 }
 
+% Make chapter-pages also have the fancy header/footer
+% Source: https://tex.stackexchange.com/a/117334
+\RequirePackage{etoolbox}
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
 %%%
 
 %%% 
