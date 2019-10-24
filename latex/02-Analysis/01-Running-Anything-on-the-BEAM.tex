@@ -12,34 +12,39 @@ today considered rather outdated. See also
 \url{https://github.com/erlang/spec}.}
 
 On its way from Erlang source code to BEAM bytecode, the Erlang/OTP
-compiler takes a valid Erlang program through two additional
+compiler takes a valid Erlang program through three additional
 intermediate, serializable representations. Such a happy path is
 illustrated in Figure \ref{fig:serializable-representations}; the
-intermediate representations are called \emph{Erlang Abstract Format}
-and \emph{Core Erlang}.  They are ``serializable'' in the sense that
-Erlang/OTP can both produce and consume files in these intermediate
-formats.
+intermediate representations are \emph{Erlang Abstract Format},
+\emph{Core Erlang}, and \emph{BEAM assembly}.  They are
+``serializable'' in the sense that Erlang/OTP can both produce and
+consume files in these intermediate formats.
  
 \begin{figure}[h]
 \centering
 \tikzstyle{block} = [rectangle, draw, 
     text width=4.5em, text centered, rounded corners,
-    node distance=8em,
+    node distance=7em,
     minimum height=4em]
 \tikzstyle{line} = [draw, -latex']
+\tikzstyle{optimizing} = [line width=0.2em]
 
 \begin{tikzpicture}[auto]
 \node (source) [block] {Erlang source code};
 \node (absform) [block, right of=source] {Erlang Abstract Format};
 \node (core) [block, right of=absform] {Core Erlang};
-\node (beam) [block, right of=core] {BEAM bytecode};
+\node (asm) [block, right of=core] {BEAM assembly};
+\node (bin) [block, right of=asm] {BEAM bytecode};
 \path [line] (source) -> (absform);
 \path [line] (absform) -> (core);
-\path [line] (core) -> (beam);
+\path [line, optimizing] (core) -> (asm);
+\path [line, optimizing] (asm) -> (bin);
 \end{tikzpicture}
 
 \caption{Serializable representations along the path of a valid
-program through the passes of the Erlang/OTP compiler.}
+program through the passes of the Erlang/OTP compiler. The fat lines
+indicate transitions where important compiler optimisations take
+place.}
 
 \label{fig:serializable-representations}
 \end{figure}
@@ -48,10 +53,14 @@ Generating code in any of the formats listed in Figure
 \ref{fig:serializable-representations}, would allow us to run code on
 the BEAM, by leveraging the Erlang/OTP infrastructure.
 
-The Erlang/OTP compiler is a heavily optimising compiler. These
-optimisations are primarily done on Core Erlang code, and rely heavily
-on the functional nature of Core Erlang. BEAM bytecode however, is
-inherently imperative, and is not further optimised at compile time.
+However, the Erlang/OTP compiler is an optimising compiler. Various
+optimisations are performed on both the Core Erlang representation,
+and the BEAM assembly representation. This is because while BEAM
+assembly is imperative, Core Erlang is a piecewise functional
+language. Hence, while the Erlang/OTP compiler employ well-known
+optimisations from the functional world at the Core Erlang level, it
+can employ well-known optimisations from the imperative world at the
+BEAM assembly level.
 
 % Probably the best-specified and most stable of these is Core
 % Erlang\cite{erlang:erlang:2001:core-intro, erlang:2004:core-spec}.
