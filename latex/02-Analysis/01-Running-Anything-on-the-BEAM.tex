@@ -1,0 +1,61 @@
+\section{Running Anything on the BEAM}
+
+There are a number of possible targets if we would like to run
+anything on the infamous BEAM. For starters, there is \emph{Erlang
+source code} and \emph{BEAM bytecode}. Neither of these have
+up-to-date specification documents\footnotemark, let alone any formal
+specifications, beyond the Erlang/OTP implementation itself.
+
+\footnotetext{The last Erlang language specification was written up in
+1999. It attained only a draft form, and is today considered rather
+outdated. See also \url{https://github.com/erlang/spec}.}
+
+On its way from Erlang source code to BEAM bytecode, the Erlang/OTP
+compiler takes a valid Erlang program through two additional
+intermediate, serializable representations. Such a happy path is
+illustrated in Figure \ref{fig:serializable-representations}; the
+intermediate representations are called \emph{Erlang Abstract Format}
+and \emph{Core Erlang}.  They are ``serializable'' in the sense that
+Erlang/OTP can both produce and consume files in these intermediate
+formats.
+ 
+\begin{figure}[h]
+\centering
+\tikzstyle{block} = [rectangle, draw, 
+    text width=4.5em, text centered, rounded corners,
+    node distance=8em,
+    minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{tikzpicture}[auto]
+\node (source) [block] {Erlang source code};
+\node (absform) [block, right of=source] {Erlang Abstract Format};
+\node (core) [block, right of=absform] {Core Erlang};
+\node (beam) [block, right of=core] {BEAM bytecode};
+\path [line] (source) -> (absform);
+\path [line] (absform) -> (core);
+\path [line] (core) -> (beam);
+\end{tikzpicture}
+
+\caption{Serializable representations along the path of a valid
+program through the passes of the Erlang/OTP compiler.}
+
+\label{fig:serializable-representations}
+\end{figure}
+
+Generating code in any of the formats listed in Figure
+\ref{fig:serializable-representations}, would allow us to run code on
+the BEAM, by leveraging the Erlang/OTP infrastructure.
+
+The Erlang/OTP compiler is a heavily optimising compiler. These
+optimisation are primarily done on Core Erlang code, and rely heavily
+on the functional nature of Core Erlang. BEAM bytecode however, is
+inherently imperative, and is not further optimised at compile time.
+
+% Probably the best-specified and most stable of these is Core
+% Erlang\cite{erlang:erlang:2001:core-intro, erlang:2004:core-spec}.
+
+% Erlang The BEAM Book suggests that ``Core Erlang is the best target
+% for a language you want to run in ERTS''. The reasons mentioned are
+% that Core Erlang is less subject to change than the languages of
+% BEAM and Erlang.
