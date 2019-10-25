@@ -19,7 +19,9 @@ intermediate representations are \emph{Erlang Abstract Format},
 \emph{Core Erlang}, and \emph{BEAM assembly}.  They are
 ``serializable'' in the sense that Erlang/OTP can both produce and
 consume files in these intermediate formats.
- 
+
+\NewDocumentCommand\optimizing{}{$\circlearrowright$}
+
 \begin{figure}[h]
 \centering
 \tikzstyle{block} = [rectangle, draw, 
@@ -32,19 +34,19 @@ consume files in these intermediate formats.
 \begin{tikzpicture}[auto]
 \node (source) [block] {Erlang source code};
 \node (absform) [block, right of=source] {Erlang Abstract Format};
-\node (core) [block, right of=absform] {Core Erlang};
-\node (asm) [block, right of=core] {BEAM assembly};
+\node (core) [block, right of=absform] {Core Erlang\\ \optimizing{}};
+\node (asm) [block, right of=core] {BEAM assembly\\ \optimizing{}};
 \node (bin) [block, right of=asm] {BEAM bytecode};
 \path [line] (source) -> (absform);
 \path [line] (absform) -> (core);
-\path [line, optimizing] (core) -> (asm);
-\path [line, optimizing] (asm) -> (bin);
+\path [line] (core) -> (asm);
+\path [line] (asm) -> (bin);
 \end{tikzpicture}
 
 \caption{Serializable representations along the path of a valid
-program through the passes of the Erlang/OTP compiler. The fat lines
-indicate transitions where important compiler optimisations take
-place.}
+program through the passes of the Erlang/OTP compiler. The symbol
+\optimizing{} marks the formats on which the compiler performs crucial
+optimisations.}
 
 \label{fig:serializable-representations}
 \end{figure}
