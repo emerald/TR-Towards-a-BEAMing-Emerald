@@ -57,12 +57,10 @@ the BEAM, by leveraging the Erlang/OTP infrastructure.
 
 However, the Erlang/OTP compiler is an optimising compiler. Various
 optimisations are performed on both the Core Erlang representation,
-and the BEAM assembly representation. This is because while BEAM
-assembly is imperative, Core Erlang is a piecewise functional
-language. Hence, while the Erlang/OTP compiler employ well-known
-optimisations from the functional world at the Core Erlang level, it
-can employ well-known optimisations from the imperative world at the
-BEAM assembly level.
+and the BEAM assembly representation. Optimisations take place in two
+stages because the two representations suitable for each their own
+class of optimisations. In particular, Core Erlang is a piecewise
+functional language, while BEAM assembly is inherently imperative.
 
 % Probably the best-specified and most stable of these is Core
 % Erlang\cite{erlang:erlang:2001:core-intro, erlang:2004:core-spec}.
