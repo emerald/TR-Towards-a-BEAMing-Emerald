@@ -7,9 +7,13 @@
 \section{An Overview of the Erlang/OTP Source Code}
 \label{app:overview-of-erlang-source}
 
-\subsection{Erlang/OTP is Open Source}
+\subsection{Erlang/OTP is Open Source / Open to Collaboration}
 
-Erlang/OTP is an open-source project in the following sense:
+Although many software projects claim to be ``Open Source'', there are
+often crucial differences in-how-far the lead developers of are open
+to collaboration with the community at large. Erlang/OTP can well be
+considered ``open to collaboration'', at least in the following
+senses:
 
 \begin{itemize}
 
@@ -23,13 +27,26 @@ Erlang/OTP is an open-source project in the following sense:
 
 \end{itemize}
 
-\item The code is published under an open source license: Apache
-License 2.0.
+\item The code is published under an Open Source license:
 
-\item There are various direct communication channels with the
-Erlang/OTP developers: there is a Slack team for Erlang, an IRC
-channel on FreeNode (\texttt{\#erlang}), as well as various mailing
-lists under \texttt{erlang.org}:
+\begin{itemize}
+
+\item Apache License 2.0 (since OTP 18.0, released 24 July, 2015)
+
+\end{itemize}
+
+\item Erlang/OTP is fairly well-documented:
+
+\begin{itemize}
+
+\item \url{https://www.erlang.org/docs}
+
+\end{itemize}
+
+\item There are various direct communication channels with core
+Erlang/OTP developers and enthusiasts: there is a Slack team for
+Erlang, an IRC channel on FreeNode (\texttt{\#erlang}), as well as
+various mailing lists; for instance:
 
 \begin{itemize}
 
@@ -37,23 +54,45 @@ lists under \texttt{erlang.org}:
 
 The main forum for Erlang/OTP questions and discussions.
 
-\item \url{http://erlang.org/mailman/listinfo/eeps}
+\end{itemize}
 
-Discussions wrt. specific Erlang Enhancement Proposals (EEPs).
+\item The core Erlang/OTP developers maintain a public issue tracker:
+
+\begin{itemize}
+
+\item \url{https://bugs.erlang.org}
 
 \end{itemize}
 
-\item The developers maintain a public issue tracker:
+Community members can go here to find some outstanding problems, post
+the bugs they discover, and follow along as bugs get fixed.
 
-\url{https://bugs.erlang.org}
+\item There are contribution guidelines for Erlang/OTP. For instance,
+these require for community contributions to come in as Pull Requests
+on GitHub:
 
-Community members can go here to find outstanding problems, post any
-bugs they may discover, and glean at some, but far from all of the
-internal development process.
+\begin{itemize}
 
-\item There are contribution guidelines for the project. These require
-for community contributions to come in as Pull Requests on GitHub:
+\item \url{https://github.com/erlang/otp/blob/master/CONTRIBUTING.md}
 
-\url{https://github.com/erlang/otp/blob/master/CONTRIBUTING.md}
+\end{itemize}
+
+\item There is a well-defined process for adding enhancements and
+extensions to Erlang. This ensures that proposals and decisions are
+well-documented in a way that with the intent of documenting proposals
+and decisions.
+
+This is called the Erlang Enhancement Process\footnote{See more at
+\url{https://www.erlang.org/erlang-enhancement-proposals}.}, which
+demands that significant changes are described Erlang Extension
+Proposals (EEPs), posted on GitHub\footnote{In particular, on
+\url{https://github.com/erlang/eep}.}, and discussed on a designated
+mailing-list:
+
+\begin{itemize}
+
+\item \url{http://erlang.org/mailman/listinfo/eeps}
+
+\end{itemize}
 
 \end{itemize}
