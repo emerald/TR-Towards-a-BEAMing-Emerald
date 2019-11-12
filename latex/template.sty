@@ -256,4 +256,34 @@
 % TikZ!
 \RequirePackage{tikz}
 \usetikzlibrary{shapes, arrows}
+\RequirePackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=1.8}
 %%%
+
+\RequirePackage{listings}
+\lstset
+{
+  language=bash,
+        tabsize=2,
+        numbers=none,
+        breaklines=true,
+%  backgroundcolor=\color{mgcolor},
+%       foregroundcolor=\color{bgcolor},
+        framexleftmargin=0.05in,
+        basicstyle=\ttfamily\footnotesize,
+        numberstyle=\tiny,
+%  keywordstyle=\color{green},
+%       stringstyle=\color{red},
+%       commentstyle=\color{ForestGreen},
+  mathescape=true,
+  captionpos=b,
+  columns=fullflexible,
+  breakatwhitespace,
+  extendedchars=true,
+%  escapeinside={(*@}{@*)},
+  mathescape=false,
+  keepspaces,
+  emphstyle={\bf},
+  showstringspaces=false
+}
