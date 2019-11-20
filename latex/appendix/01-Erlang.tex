@@ -80,10 +80,8 @@ See more at \url{https://www.codesync.global/}.
 
 \end{description}
 
-\section{An Overview of the Erlang/OTP Source Code}
-\label{app:overview-of-erlang-source}
-
-\subsection{Erlang/OTP is Open Source / Open to Collaboration}
+\section{Erlang/OTP is Open Source / Open to Collaboration}
+\label{app:erlang-otp-is-open-source}
 
 Although many software projects claim to be ``Open Source'', there are
 often crucial differences in-how-far the lead developers of are open
@@ -172,3 +170,17 @@ mailing-list:
 \end{itemize}
 
 \end{itemize}
+
+\section{An Overview of the Erlang/OTP Source Code}
+\label{app:overview-of-erlang-source}
+
+\begin{description}
+
+\item[\texttt{lib/compiler/src/compile.erl}]\ \\
+
+This module defines the Erlang compiler interface, as an Erlang
+module. The C module \texttt{erts/common/erlc.c} declares the actual
+entry-point for \texttt{erlc}, and interfaces with the above Erlang
+module via the \texttt{erts} C API.
+
+\end{description}
