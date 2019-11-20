@@ -3,21 +3,126 @@
 Due to the Erlang/OTP infrastructure, there are a number of possible
 code generation targets, if we would like to run our code on the BEAM.
 
-
-
-For starters, there is \emph{Erlang source code} and \emph{BEAM
-bytecode}. Neither of these have up-to-date specification
-documents\footnotemark, let alone any formal specifications. The best
-specification of both is the Erlang/OTP implementation itself. See
-Appendix \longref{app:overview-of-erlang-source} for an overview of
-the Erlang/OTP source code.
+For starters, there is \emph{Erlang source code} (usual
+file-extension: \texttt{.erl}) and \emph{BEAM bytecode} (usual
+file-extension: \texttt{.beam}). Neither of these have up-to-date
+specification documents\footnotemark, let alone any formal
+specifications. However, due to Erlang being a fairly popular
+programming language\footnotemark, there is a wealth of literature on
+programming Erlang\footnotemark. Never-the-less, the best
+specification of both is the Erlang/OTP implementation
+itself\footnotemark.
 
 \footnotetext{The last Erlang language specification was written up in
 1999\cite{erlang:1999:spec}. It attained only a draft form, and is
 today considered rather outdated. See also
 \url{https://github.com/erlang/spec}.}
 
-The Erlang/OTP compiler is a multi-pass compiler. As such, it takes a
+\footnotetext{See Appendix \longref{app:popularity-of-erlang} for an
+analysis of the popularity of Erlang.}
+
+\footnotetext{See also \url{https://www.erlang.org/docs}.}
+
+\footnotetext{See Appendix \longref{app:overview-of-erlang-source} for
+an overview of the Erlang/OTP source code.}
+
+\subsection{Compiling Erlang source code to BEAM bytecode}
+
+Erlang source code can be transformed into BEAM bytecode using the
+Erlang compiler in Erlang/OTP. There are two entry-point binaries,
+which we can use to interface with the compiler:
+
+\begin{enumerate}
+
+\item The Erlang compiler binary, \texttt{erlc}.
+
+\item The Erlang emulator and/or interactive shell, \texttt{erl}.
+
+\end{enumerate}
+
+For instance, assume that we have a file called \texttt{m.erl},
+containing the source code of an Erlang module. We can compile it to
+an \texttt{m.beam}, containing BEAM bytecode for that module, using
+either of the ways shown in Figure \ref{fig:erlc}. These approaches
+are non-interactive, in the sense that code is passed in, and passed
+out via files, rather than standard input/output. Warnings and errors
+however, are still written to standard output/error, in a
+human-readable fashion.
+
+\begin{figure}[h!]
+\begin{minipage}[t]{0.5\textwidth}
+\begin{lstlisting}
+$ erlc m.erl
+\end{lstlisting}
+\end{minipage}%
+\begin{minipage}[t]{0.5\textwidth}
+\begin{lstlisting}
+$ erl -compile m.erl
+\end{lstlisting}
+\end{minipage}%
+\caption{A couple ``non-interactive'' ways to compile an Erlang
+module.}
+\label{fig:erlc}
+\end{figure}
+
+In either case, the work is done by the built-in \texttt{compile}
+library in Erlang/OTP. This means that an Erlang module can also be
+compiled in a more interactive fashion, using \texttt{erl}. The
+potential benefit of this approach is that warnings and errors can
+remain in a more machine-readable format (i.e., they can be Erlang
+terms, not bytes on a stream). This approach is illustrated in Figure
+\ref{fig:erl-c}.
+
+\begin{figure}[h!]
+\begin{minipage}[t]{0.2\textwidth}
+\begin{lstlisting}
+$ erl
+...
+1> R = c(m).
+2>
+\end{lstlisting}
+\end{minipage}%
+\begin{minipage}[t]{0.35\textwidth}
+\begin{lstlisting}
+$ erl
+...
+1> R = compile:file(m).
+2>
+\end{lstlisting}
+\end{minipage}%
+\begin{minipage}[t]{0.45\textwidth}
+\begin{lstlisting}
+$ erl
+...
+1> R = compile:file(m, [return]).
+2>
+\end{lstlisting}
+\end{minipage}%
+\caption{A couple ``interactive'' ways to compile an Erlang module.
+The variable \texttt{R} will contain information on the outcome of the
+compilation. \texttt{c} is a simple variant of \texttt{compile:file}.
+The right-most example will actually yield errors and warnings (if
+any) as Erlang terms inside the compound term \texttt{R}.}
+\label{fig:erl-c}
+\end{figure}
+
+\subsection{Running BEAM bytecode}
+
+There is no notion of ``running'' an Erlang module
+
+Erlang source code and BEAM bytecode are a world apart. The first is a
+high-level functional programming language. The second is a low-level
+bytecode for a register-based virtual machine. In-between those, the
+Erlang compiler performs a number of transformations and
+optimizations. If we generate Erlang source code, we must make sure to
+efficiently map our (possibly high-level) model to the Erlang
+high-level programming model. If we instead generate BEAM bytecode, we
+miss out on the optimizations the Erlang compiler could have performed
+for us.
+
+\subsection{Core Erlang and BEAM assembly}
+
+The Erlang/OTP compiler is a multi-pass compiler. As such, it takes at
 valid Erlang program through a number of intermediate representations.
 Some of these representations are serializable in the following sense:
 the compiler can produce, and take in files in these formats, omitting
