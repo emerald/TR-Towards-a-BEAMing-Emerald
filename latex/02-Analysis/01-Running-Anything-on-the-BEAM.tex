@@ -50,7 +50,7 @@ the file-based API of the Erlang/OTP compiler only.
 
 \NewDocumentCommand\optimizing{}{$\circlearrowright$}
 
-\begin{figure}[h]
+\begin{figure}[ht!]
 \centering
 \tikzstyle{block} = [rectangle, draw, 
     text width=4.5em, text centered, rounded corners,
@@ -116,7 +116,7 @@ out via files, rather than standard input/output. Warnings and errors
 however, are still written to standard output/error, in a
 human-readable fashion.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \begin{minipage}[t]{0.5\textwidth}
 \begin{lstlisting}
 $ erlc m.erl
@@ -139,7 +139,7 @@ this approach is that warnings and errors can remain in a more
 machine-readable format (i.e., Erlang terms, not bytes on a stream).
 This approach is illustrated in Figure \ref{fig:erl-c}.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \begin{minipage}[t]{0.2\textwidth}
 \begin{lstlisting}
 $ erl
@@ -224,7 +224,7 @@ compiler only. In particular:
 
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[ht!]
 \centering
 \tikzstyle{block} = [rectangle, draw, 
     text width=6em, text centered, rounded corners,
