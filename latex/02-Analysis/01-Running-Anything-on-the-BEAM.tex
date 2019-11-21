@@ -6,25 +6,92 @@ code generation targets, if we would like to run our code on the BEAM.
 For starters, there is \emph{Erlang source code} (usual
 file-extension: \texttt{.erl}) and \emph{BEAM bytecode} (usual
 file-extension: \texttt{.beam}). Neither of these have up-to-date
-specification documents\footnotemark, let alone any formal
+specification documents\footnote{The last Erlang language
+specification was written up in 1999\cite{erlang:1999:spec}. It
+attained only a draft form, and is today considered rather outdated.
+See also \url{https://github.com/erlang/spec}.}, let alone any formal
 specifications. However, due to Erlang being a fairly popular
-programming language\footnotemark, there is a wealth of literature on
-programming Erlang\footnotemark. Never-the-less, the best
-specification of both is the Erlang/OTP implementation
-itself\footnotemark.
+programming language\footnote{See Appendix
+\longref{app:popularity-of-erlang} for an analysis of the popularity
+of Erlang.}, there is a wealth of literature on programming
+Erlang\footnote{See also \url{https://www.erlang.org/docs}.}.
+Never-the-less, the best specification of both is the Erlang/OTP
+implementation itself\footnote{See Appendix
+\longref{app:overview-of-erlang-source} for an overview of the
+Erlang/OTP source code.}.
 
-\footnotetext{The last Erlang language specification was written up in
-1999\cite{erlang:1999:spec}. It attained only a draft form, and is
-today considered rather outdated. See also
-\url{https://github.com/erlang/spec}.}
+Erlang source code and BEAM bytecode are a world apart. The first is a
+high-level functional programming language. The second is a low-level
+bytecode for a register-based virtual machine. To transform one into
+the other, the Erlang/OTP compiler performs a number of
+transformations and optimizations; passing over the Erlang module
+multiple times.
 
-\footnotetext{See Appendix \longref{app:popularity-of-erlang} for an
-analysis of the popularity of Erlang.}
+If we generate Erlang source code, we must make sure to efficiently
+map our (possibly high-level) model to the high-level Erlang
+programming model. If we instead generate BEAM bytecode, we miss out
+on the optimizations the Erlang/OTP compiler could have performed for
+us.
 
-\footnotetext{See also \url{https://www.erlang.org/docs}.}
+The Erlang/OTP compiler takes an Erlang module through a number of
+intermediate representations. Some of these representations are
+serializable---the compiler can both output, and consume files in such
+formats. The serializable intermediate representations are \emph{Core
+Erlang} (usual file-extension: \texttt{.core}) and \emph{BEAM
+assembly} (usual file-extension: \texttt{.beam}). As with Erlang
+source code, and BEAM bytecode, these do not have up-to-date
+specifications, beyond the Erlang/OTP implementation itself.
 
-\footnotetext{See Appendix \longref{app:overview-of-erlang-source} for
-an overview of the Erlang/OTP source code.}
+All the serializable representations along a happy path through the
+Erlang/OTP compiler are illustrated in Figure
+\ref{fig:serializable-representations}. Generating code in any of
+these formats, would allow us to run code on the BEAM, by leveraging
+the file-based API of the Erlang/OTP compiler only. 
+
+\NewDocumentCommand\optimizing{}{$\circlearrowright$}
+
+\begin{figure}[h]
+\centering
+\tikzstyle{block} = [rectangle, draw, 
+    text width=4.5em, text centered, rounded corners,
+    rectangle split, rectangle split parts=2,
+    rectangle split draw splits=true,
+    node distance=7em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{wrapper} = [rectangle, draw, dashed, rounded corners]
+\tikzstyle{optimizing} = [line width=0.2em]
+
+\begin{tikzpicture}[auto]
+\node (source) [block] {
+  \nodepart{one} Erlang source code
+  \nodepart{two} \texttt{.erl}
+};
+\node (core) [block, right of=source] {
+  \nodepart{one} Core Erlang\\ \optimizing{}
+  \nodepart{two} \texttt{.core}
+};
+\node (asm) [block, right of=core] {
+  \nodepart{one} BEAM assembly\\ \optimizing{}
+  \nodepart{two} \texttt{.S}
+};
+\node (bin) [block, right of=asm] {
+  \nodepart{one} BEAM bytecode\\ ~
+  \nodepart{two} \texttt{.beam}
+};
+\node (functional) [wrapper, fit={(source) (core)}, label=below:{\emph{Functional}}] {};
+\node (imperative) [wrapper, fit={(asm) (bin)}, label=below:{\emph{Imperative}}] {};
+\path [line] (source) -> (core);
+\path [line] (core) -> (asm);
+\path [line] (asm) -> (bin);
+\end{tikzpicture}
+
+\caption{Serializable representations along the path of a valid module
+through the passes of the Erlang/OTP compiler. The symbol
+\optimizing{} marks the formats on which the compiler performs crucial
+optimisations.}
+
+\label{fig:serializable-representations}
+\end{figure}
 
 \subsection{Compiling Erlang source code to BEAM bytecode}
 
@@ -108,60 +175,10 @@ any) as Erlang terms, inside the compound term \texttt{R}.}
 
 \subsection{Running BEAM bytecode}
 
-Once compiled, 
-
-There is no notion of ``running'' an Erlang module
-
-Erlang source code and BEAM bytecode are a world apart. The first is a
-high-level functional programming language. The second is a low-level
-bytecode for a register-based virtual machine. In-between those, the
-Erlang compiler performs a number of transformations and
-optimizations. If we generate Erlang source code, we must make sure to
-efficiently map our (possibly high-level) model to the Erlang
-high-level programming model. If we instead generate BEAM bytecode, we
-miss out on the optimizations the Erlang compiler could have performed
-for us.
+Once compiled, the module code can be executed using \texttt{erl}.
+Again, there is a non-interactive, and an interactive option.
 
 \subsection{Core Erlang and BEAM assembly}
-
-The Erlang/OTP compiler is a multi-pass compiler. As such, it takes at
-valid Erlang program through a number of intermediate representations.
-Some of these representations are serializable in the following sense:
-the compiler can produce, and take in files in these formats, omitting
-subsequent, or preceding passes. The serializable representations
-along a happy path through the Erlang/OTP compiler are illustrated in
-Figure \ref{fig:serializable-representations}.
-
-\NewDocumentCommand\optimizing{}{$\circlearrowright$}
-
-\begin{figure}[h]
-\centering
-\tikzstyle{block} = [rectangle, draw, 
-    text width=4.5em, text centered, rounded corners,
-    node distance=7em,
-    minimum height=4em]
-\tikzstyle{line} = [draw, -latex']
-\tikzstyle{optimizing} = [line width=0.2em]
-
-\begin{tikzpicture}[auto]
-\node (source) [block] {Erlang source code};
-%\node (absform) [block, right of=source] {Erlang Abstract Format};
-\node (core) [block, right of=source] {Core Erlang\\ \optimizing{}};
-\node (asm) [block, right of=core] {BEAM assembly\\ \optimizing{}};
-\node (bin) [block, right of=asm] {BEAM bytecode};
-\path [line] (source) -> (core);
-%\path [line] (absform) -> (core);
-\path [line] (core) -> (asm);
-\path [line] (asm) -> (bin);
-\end{tikzpicture}
-
-\caption{Serializable representations along the path of a valid
-program through the passes of the Erlang/OTP compiler. The symbol
-\optimizing{} marks the formats on which the compiler performs crucial
-optimisations.}
-
-\label{fig:serializable-representations}
-\end{figure}
 
 Generating code in any of the formats listed in Figure
 \ref{fig:serializable-representations}, would allow us to run code on
