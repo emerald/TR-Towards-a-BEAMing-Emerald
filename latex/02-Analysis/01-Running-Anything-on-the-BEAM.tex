@@ -34,9 +34,9 @@ which we can use to interface with the compiler:
 
 \begin{enumerate}
 
-\item The Erlang compiler binary, \texttt{erlc}.
+\item the Erlang compiler binary, \texttt{erlc}; and
 
-\item The Erlang emulator and/or interactive shell, \texttt{erl}.
+\item the Erlang emulator and/or interactive shell, \texttt{erl}.
 
 \end{enumerate}
 
@@ -69,8 +69,8 @@ In either case, the work is done by the built-in \texttt{compile}
 library in Erlang/OTP. This means that an Erlang module can also be
 compiled in a more interactive fashion, using \texttt{erl}. The
 potential benefit of this approach is that warnings and errors can
-remain in a more machine-readable format (i.e., they can be Erlang
-terms, not bytes on a stream). This approach is illustrated in Figure
+remain in a more machine-readable format (i.e., Erlang terms, not
+bytes on a stream). This approach is illustrated in Figure
 \ref{fig:erl-c}.
 
 \begin{figure}[h!]
@@ -102,11 +102,13 @@ $ erl
 The variable \texttt{R} will contain information on the outcome of the
 compilation. \texttt{c} is a simple variant of \texttt{compile:file}.
 The right-most example will actually yield errors and warnings (if
-any) as Erlang terms inside the compound term \texttt{R}.}
+any) as Erlang terms, inside the compound term \texttt{R}.}
 \label{fig:erl-c}
 \end{figure}
 
 \subsection{Running BEAM bytecode}
+
+Once compiled, 
 
 There is no notion of ``running'' an Erlang module
 
