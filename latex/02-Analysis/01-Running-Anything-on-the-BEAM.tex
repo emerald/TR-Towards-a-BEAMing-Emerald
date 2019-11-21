@@ -33,13 +33,13 @@ programming model. If we instead generate BEAM bytecode, we miss out
 on the optimizations the Erlang/OTP compiler could have performed for
 us.
 
-The Erlang/OTP compiler takes an Erlang module through a number of
-intermediate representations. Some of these representations are
-serializable---the compiler can both output, and consume files in such
-formats. The serializable intermediate representations are \emph{Core
-Erlang} (usual file-extension: \texttt{.core}) and \emph{BEAM
-assembly} (usual file-extension: \texttt{.S}). As with Erlang
-source code, and BEAM bytecode, these do not have up-to-date
+Furthermore, the Erlang/OTP compiler takes an Erlang module through a
+number of intermediate representations. Some of these representations
+are serializable---the compiler can both output, and consume files in
+such formats. The serializable intermediate representations are
+\emph{Core Erlang} (usual file-extension: \texttt{.core}) and
+\emph{BEAM assembly} (usual file-extension: \texttt{.S}). As with
+Erlang source code, and BEAM bytecode, these do not have up-to-date
 specifications, beyond the Erlang/OTP implementation itself.
 
 All the serializable representations along a happy path through the
