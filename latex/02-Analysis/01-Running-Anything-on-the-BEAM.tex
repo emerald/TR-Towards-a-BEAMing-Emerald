@@ -93,6 +93,11 @@ optimisations.}
 \label{fig:serializable-representations}
 \end{figure}
 
+The following subsections detail how to use the Erlang/OTP
+infrastructure to go from Erlang source code to BEAM bytecode, how to
+run BEAM bytecode, and how to generate and pass in code in, and
+further detail the aforementioned intermediate representations.
+
 \subsection{Compiling Erlang source code to BEAM bytecode}
 
 Erlang source code can be transformed into BEAM bytecode using the
@@ -176,6 +181,60 @@ any) as Erlang terms, inside the compound term \texttt{R}.}
 
 Once compiled, the module code can be executed using \texttt{erl}.
 Again, there is a non-interactive, and an interactive option.
+
+\subsection{Core Erlang}
+
+Core Erlang\cite{erlang:erlang:2001:core-intro, erlang:2004:core-spec}
+is an intermediate language designed specifically to enable the
+Erlang/OTP compiler to leverage the compiler optimizations afforded by
+a functional programming language, while not prohibiting the evolution
+of either the Erlang syntax and semantics, or the BEAM virtual
+machine.
+
+Overall, the Erlang/OTP compiler performs inlining, constant folding,
+and common subexpression elimination. The optimizations performed on
+Core Erlang code are further detailed in Table
+\longref{tbl:core-erlang-optimizations}.
+
+\begin{table}[ht!]
+\centering
+\def\arraystretch{1.2}
+\begin{tabular}{rlr}
+\textbf{Order} & \textbf{Module} & \textbf{Lines of Code} \\\cline{2-3}
+1 & \texttt{sys\_core\_inline} & 217 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Inlining of small functions.%
+    }} \\\cline{2-3}
+2 & \texttt{sys\_core\_fold} & 3276 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Constant folding.%
+    }} \\\cline{2-3}
+3 & \texttt{cerl\_inline} & 2834 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      An implementation of the inlining algorithm described in%
+      \cite{erlang:sas:1997:inlining}.%
+    }} \\\cline{2-3}
+4 & \texttt{sys\_core\_fold} & 3276 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Performed once more after inlining.%
+    }} \\\cline{2-3}
+5 & \texttt{sys\_core\_alias} & 307 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      A limited form of common subexpression elimination.%
+    }} \\\cline{2-3}
+\end{tabular}
+\caption{The optimizations performed on Core Erlang by the Erlang/OTP
+compiler. All modules are located in \texttt{lib/compiler/src}, and
+are called from the \texttt{compile} module, in the given order. Lines
+of Code is the raw line-count of the module in Erlang/OTP version
+22.1; this gives  a rough idea of where the majority of the work
+happens.}
+\label{tbl:core-erlang-optimizations}
+\end{table}
+
+\texttt{erlc} can produce both optimized and unoptimized Core Erlang
+code. For this, it accepts either the arugment \texttt{+to\_core}, or
+\texttt{+to\_core0}, respectively.
 
 \subsection{Core Erlang and BEAM assembly}
 
