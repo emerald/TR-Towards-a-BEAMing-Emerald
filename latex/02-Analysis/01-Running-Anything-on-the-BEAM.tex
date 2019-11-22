@@ -191,10 +191,27 @@ a functional programming language, while not prohibiting the evolution
 of either the Erlang syntax and semantics, or the BEAM virtual
 machine.
 
-Overall, the Erlang/OTP compiler performs inlining, constant folding,
-and common subexpression elimination. The optimizations performed on
-Core Erlang code are further detailed in Table
-\longref{tbl:core-erlang-optimizations}.
+Although there exists a so-called ``Core Erlang 1.0.3 language
+specification''\cite{erlang:2004:core-spec}, it hasn't been updated
+since 2004. At the same time, the module in Erlang/OTP that implements
+Core Erlang (i.e., \texttt{lib/compiler/src/cerl.erl}), has seen some
+non-trivial modifications since 2004\footnote{At least, since 2007;
+the source code available for download at \url{erlang.org} only goes
+back to 2007. You will find a diff between the 2007 and 2019 versions
+of \texttt{cerl} in \texttt{appendix/cerl.diff}.}. In particular,
+associative maps were added as a built-in in Erlang in
+2014\footnote{See
+\url{http://erlang.org/download/otp_src_17.0.readme}.}; they made into
+Core Erlang in 2013\footnote{See Erlang/OTP commit ID
+\texttt{d4379900790b37498fefa237cd03ab2d5781bb6a}.}. Core Erlang
+however, remains a high-level, strict, dynamically-typed, functional
+language, with pattern-matching and concurrency primitives.  It bears
+resemblance to Erlang, but lacks some high-level conveniences.
+
+The optimizations performed by the Erlang/OTP compiler on Core Erlang
+code are listed in Table \longref{tbl:core-erlang-optimizations}.
+Overall, it performs inlining, constant folding, and common
+subexpression elimination.
 
 \begin{table}[ht!]
 \centering
