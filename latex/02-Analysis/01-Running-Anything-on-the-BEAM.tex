@@ -234,7 +234,15 @@ happens.}
 
 \texttt{erlc} can produce both optimized and unoptimized Core Erlang
 code. For this, it accepts either the arugment \texttt{+to\_core}, or
-\texttt{+to\_core0}, respectively.
+\texttt{+to\_core0}, respectively. In either case, a \texttt{.core}
+file is produced.
+
+If you pass in a \texttt{.core} file to \texttt{erlc}, it will first
+attempt to optimize the Core Erlang code, before moving on to the next
+compiler stages. \texttt{erlc} takes the optional \texttt{+from\_core}
+argument, to explicitly indicate that the incoming file is a Core
+Erlang file. However, this argument is assumed for a \texttt{.core}
+file.
 
 \subsection{Core Erlang and BEAM assembly}
 
