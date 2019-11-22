@@ -220,7 +220,7 @@ subexpression elimination.
 \textbf{Order} & \textbf{Module} & \textbf{Line-count} \\\cline{2-3}
 1 & \texttt{sys\_core\_inline} & 217 \\
   & \multicolumn{2}{l}{\quad\emph{%
-      Inlining of small functions.%
+      Basic inlining of small functions.%
     }} \\\cline{2-3}
 2 & \texttt{sys\_core\_fold} & 3276 \\
   & \multicolumn{2}{l}{\quad\emph{%
@@ -228,12 +228,12 @@ subexpression elimination.
     }} \\\cline{2-3}
 3 & \texttt{cerl\_inline} & 2834 \\
   & \multicolumn{2}{l}{\quad\emph{%
-      An implementation of the inlining algorithm described in%
-      \cite{erlang:sas:1997:inlining}.%
+      More elaborate inlining, in lieau of Waddel \&
+      Dybvig\cite{erlang:sas:1997:inlining}.%
     }} \\\cline{2-3}
 4 & \texttt{sys\_core\_fold} & 3276 \\
   & \multicolumn{2}{l}{\quad\emph{%
-      Performed once more after inlining.%
+      Fold constants once more after aggressive inlining.%
     }} \\\cline{2-3}
 5 & \texttt{sys\_core\_alias} & 307 \\
   & \multicolumn{2}{l}{\quad\emph{%
