@@ -217,7 +217,7 @@ subexpression elimination.
 \centering
 \def\arraystretch{1.2}
 \begin{tabular}{rlr}
-\textbf{Order} & \textbf{Module} & \textbf{Lines of Code} \\\cline{2-3}
+\textbf{Order} & \textbf{Module} & \textbf{Line-count} \\\cline{2-3}
 1 & \texttt{sys\_core\_inline} & 217 \\
   & \multicolumn{2}{l}{\quad\emph{%
       Inlining of small functions.%
@@ -242,10 +242,9 @@ subexpression elimination.
 \end{tabular}
 \caption{The optimizations performed on Core Erlang by the Erlang/OTP
 compiler. All modules are located in \texttt{lib/compiler/src}, and
-are called from the \texttt{compile} module, in the given order. Lines
-of Code is the raw line-count of the module in Erlang/OTP version
-22.1; this gives  a rough idea of where the majority of the work
-happens.}
+are called from the \texttt{compile} module, in the given order.
+Line-counts are from Erlang/OTP version 22.1; they give  a rough idea
+of where the majority of the work happens.}
 \label{tbl:core-erlang-optimizations}
 \end{table}
 
