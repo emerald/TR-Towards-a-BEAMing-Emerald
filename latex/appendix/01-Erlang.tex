@@ -176,11 +176,20 @@ mailing-list:
 
 \begin{description}
 
-\item[\texttt{lib/compiler/src/compile.erl}]\ \\
+\item[\texttt{lib/compiler/src/compile.erl}]~
 
 This module defines the Erlang compiler interface, as an Erlang
 module. The C module \texttt{erts/common/erlc.c} declares the actual
 entry-point for \texttt{erlc}, and interfaces with the above Erlang
 module via the \texttt{erts} C API.
+
+\item[\texttt{lib/compiler/src/genop.tab}]~
+
+This file defines the generic BEAM instruction set. These definitions
+are used by both the compiler, and the runtime system. They are
+written in a small domain-specific language, and there is a Perl
+script\footnote{See \texttt{erts/emulator/utils/beam\_makeops}.}, to
+generate both Erlang code for compiler, and C code for the runtime,
+from this file, coupled with other \texttt{.tab} files.
 
 \end{description}
