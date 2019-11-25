@@ -264,6 +264,85 @@ argument, to explicitly indicate that the incoming file is a Core
 Erlang file. However, this argument is assumed for a \texttt{.core}
 file.
 
+\subsection{BEAM Assembly}
+
+BEAM is a garbage collected, reduction counting, non-preemptive,
+register-based virtual machine. These characteristics are portrayed in
+the BEAM instruction set, and hence the BEAM assembly.
+
+BEAM really has two instruction sets, a generic, and a specific one.
+The purpose of this distinction is to enable innovation at the virtual
+machine level, without introducing compiler-facing changes to the
+instruction set. In particular, the generic instruction set is less
+subject to change than the specific one. This is similar to the use of
+microcode in Computer Architecture.
+
+The generic instruction set is declared in
+\texttt{lib/compiler/src/genop.tab}. This file uses a small, custom,
+human-readable, domain-specific language. The Perl script,
+\texttt{erts/emulator/utils/beam\_makeops}, uses these definitions to
+generate both Erlang code for the compiler, and C code for the Erlang
+runtime. This language, along with the Perl script, and the design
+decisions behind them, are documented in
+\texttt{erts/emulator/internal\_doc/beam\_makeops.md}\footnote{See
+also \url{http://erlang.org/doc/apps/erts/beam_makeops.html} for the
+most recent, typeset version of the file.}.
+
+Most notably, the compiler is not made aware of the specific BEAM
+instructions; the runtime takes care of transforming generic
+instructions into specific ones. Hence, BEAM assembly is a
+textualization of the generic BEAM instruction set, and all compiler
+optimizations are done on generic BEAM instructions.
+
+The optimizations performed by the Erlang/OTP compiler on BEAM
+assembly, are listed in Table \longref{tbl:asm-optimizations}.
+Overall, it performs function inlining, constant folding, and common
+subexpression elimination.
+
+\texttt{erlc} will produce optmized BEAM assembly, if you pass in the
+argument \texttt{+to\_asm}, or equivalently, \texttt{-S}. If you pass
+in a \texttt{.S} file, the argument \texttt{+from\_asm} is assumed,
+and the compiler proceeds to generate BEAM bytecode.
+
+\begin{table}[ht!]
+\centering
+\def\arraystretch{1.2}
+\begin{tabular}{rlr}
+\textbf{Order} & \textbf{Module} & \textbf{Line-count} \\\cline{2-3}
+1 & \texttt{beam\_block} & 153 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Merge adjacent blocks; optimizations around blocks.%
+    }} \\\cline{2-3}
+2 & \texttt{beam\_except} & 255 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Rewrite some \texttt{erlang:error} calls to spec. instructions.%
+    }} \\\cline{2-3}
+3 & \texttt{beam\_jump} & 736 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Remove unreachable code, duplicate code; optimize jumps.%
+    }} \\\cline{2-3}
+4 & \texttt{beam\_peep} & 219 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Peep-hole optimizations; removing redundant tests.%
+    }} \\\cline{2-3}
+5 & \texttt{beam\_clean} & 167 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Cleanp up (e.g., remove unused labels and functions).%
+    }} \\\cline{2-3}
+6 & \texttt{beam\_trim} & 467 \\
+  & \multicolumn{2}{l}{\quad\emph{%
+      Stack trimming.
+    }} \\\cline{2-3}
+\end{tabular}
+\caption{The optimizations performed on BEAM assembly by the
+Erlang/OTP compiler. All modules are located in
+\texttt{lib/compiler/src}, and are called from the \texttt{compile}
+module, in the given order.  Line-counts are from Erlang/OTP version
+22.1; they give  a rough idea of where the majority of the work
+happens.}
+\label{tbl:asm-optimizations}
+\end{table}
+
 \subsection{Core Erlang and BEAM assembly}
 
 Generating code in any of the formats listed in Figure
