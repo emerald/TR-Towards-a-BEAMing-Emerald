@@ -277,10 +277,10 @@ instruction set. In particular, the generic instruction set is less
 subject to change than the specific one. This is similar to the use of
 microcode in Computer Architecture.
 
-The generic instruction set is declared in
-\texttt{lib/compiler/src/genop.tab}. This file uses a small, custom,
-human-readable, domain-specific language. The Perl script,
-\texttt{erts/emulator/utils/beam\_makeops}, uses these definitions to
+The file \texttt{lib/compiler/src/genop.tab} declares the generic
+instruction set. The file uses a small, custom, human-readable,
+domain-specific language. The Perl script,
+\texttt{erts/emulator/utils/beam\_makeops}, uses the declarations to
 generate both Erlang code for the compiler, and C code for the Erlang
 runtime. This language, along with the Perl script, and the design
 decisions behind them, are documented in
