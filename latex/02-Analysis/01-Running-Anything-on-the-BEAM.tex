@@ -24,13 +24,13 @@ Erlang source code and BEAM bytecode are a world apart. The first is a
 high-level functional programming language. The second is a low-level
 bytecode for a register-based virtual machine. To transform one into
 the other, the Erlang/OTP compiler performs a number of
-transformations and optimizations; passing over the Erlang module
+transformations and optimisations; passing over the Erlang module
 multiple times.
 
 If we generate Erlang source code, we must make sure to efficiently
 map our (possibly high-level) model to the high-level Erlang
 programming model. If we instead generate BEAM bytecode, we miss out
-on the optimizations the Erlang/OTP compiler could have performed for
+on the optimisations the Erlang/OTP compiler could have performed for
 us.
 
 Furthermore, the Erlang/OTP compiler takes an Erlang module through a
@@ -48,7 +48,7 @@ Erlang/OTP compiler are illustrated in Figure
 these formats, would allow us to run code on the BEAM, by leveraging
 the file-based API of the Erlang/OTP compiler only. 
 
-\NewDocumentCommand\optimizing{}{$\circlearrowright$}
+\NewDocumentCommand\optimising{}{$\circlearrowright$}
 
 \begin{figure}[ht!]
 \centering
@@ -59,7 +59,7 @@ the file-based API of the Erlang/OTP compiler only.
     node distance=7em]
 \tikzstyle{line} = [draw, -latex']
 \tikzstyle{wrapper} = [rectangle, draw, dashed, rounded corners]
-\tikzstyle{optimizing} = [line width=0.2em]
+\tikzstyle{optimising} = [line width=0.2em]
 
 \begin{tikzpicture}[auto]
 \node (source) [block] {
@@ -67,11 +67,11 @@ the file-based API of the Erlang/OTP compiler only.
   \nodepart{two} \texttt{.erl}
 };
 \node (core) [block, right of=source] {
-  \nodepart{one} Core Erlang\\ \optimizing{}
+  \nodepart{one} Core Erlang\\ \optimising{}
   \nodepart{two} \texttt{.core}
 };
 \node (asm) [block, right of=core] {
-  \nodepart{one} BEAM assembly\\ \optimizing{}
+  \nodepart{one} BEAM assembly\\ \optimising{}
   \nodepart{two} \texttt{.S}
 };
 \node (bin) [block, right of=asm] {
@@ -87,7 +87,7 @@ the file-based API of the Erlang/OTP compiler only.
 
 \caption{Serializable representations along the path of a valid module
 through the passes of the Erlang/OTP compiler. The symbol
-\optimizing{} marks the formats on which the compiler performs crucial
+\optimising{} marks the formats on which the compiler performs crucial
 optimisations.}
 
 \label{fig:serializable-representations}
@@ -186,7 +186,7 @@ Again, there is a non-interactive, and an interactive option.
 
 Core Erlang\cite{erlang:erlang:2001:core-intro, erlang:2004:core-spec}
 is an intermediate language, designed specifically to enable the
-Erlang/OTP compiler to leverage the compiler optimizations afforded by
+Erlang/OTP compiler to leverage the compiler optimisations afforded by
 a functional programming language, while not prohibiting the evolution
 of either the Erlang syntax and semantics, or its execution
 environment.
@@ -208,8 +208,8 @@ however, remains a high-level, strict, dynamically-typed, functional
 language, with pattern-matching and concurrency primitives.  It bears
 resemblance to Erlang, but lacks some of its high-level conveniences.
 
-The optimizations performed by the Erlang/OTP compiler on Core Erlang
-code are listed in Table \longref{tbl:core-erlang-optimizations}.
+The optimisations performed by the Erlang/OTP compiler on Core Erlang
+code are listed in Table \longref{tbl:core-erlang-optimisations}.
 Overall, it performs function inlining, constant folding, and common
 subexpression elimination.
 
@@ -244,21 +244,21 @@ subexpression elimination.
       Optimize patterns using Erlang's bit syntax.%
     }} \\\cline{2-3}
 \end{tabular}
-\caption{The optimizations performed on Core Erlang by the Erlang/OTP
+\caption{The optimisations performed on Core Erlang by the Erlang/OTP
 compiler. All modules are located in \texttt{lib/compiler/src}, and
 are called from the \texttt{compile} module, in the given order.
 Line-counts are from Erlang/OTP version 22.1; they give  a rough idea
 of where the majority of the work happens.}
-\label{tbl:core-erlang-optimizations}
+\label{tbl:core-erlang-optimisations}
 \end{table}
 
-\texttt{erlc} can produce both optimized and unoptimized Core Erlang
+\texttt{erlc} can produce both optimised and unoptimised Core Erlang
 code. For this, it accepts either the arugment \texttt{+to\_core}, or
 \texttt{+to\_core0}, respectively. In either case, a \texttt{.core}
 file is produced.
 
 If you pass in a \texttt{.core} file to \texttt{erlc}, it will first
-attempt to optimize the Core Erlang code, before moving on to the next
+attempt to optimise the Core Erlang code, before moving on to the next
 compiler stages. \texttt{erlc} takes the optional \texttt{+from\_core}
 argument, to explicitly indicate that the incoming file is a Core
 Erlang file. However, this argument is assumed for a \texttt{.core}
@@ -292,10 +292,10 @@ Most notably, the compiler is not made aware of the specific BEAM
 instructions; the runtime takes care of transforming generic
 instructions into specific ones. Hence, BEAM assembly is a
 textualization of the generic BEAM instruction set, and all compiler
-optimizations are done on generic BEAM instructions.
+optimisations are done on generic BEAM instructions.
 
-The optimizations performed by the Erlang/OTP compiler on BEAM
-assembly, are listed in Table \longref{tbl:asm-optimizations}.
+The optimisations performed by the Erlang/OTP compiler on BEAM
+assembly, are listed in Table \longref{tbl:asm-optimisations}.
 Overall, it performs function inlining, constant folding, and common
 subexpression elimination.
 
@@ -311,7 +311,7 @@ and the compiler proceeds to generate BEAM bytecode.
 \textbf{Order} & \textbf{Module} & \textbf{Line-count} \\\cline{2-3}
 1 & \texttt{beam\_block} & 153 \\
   & \multicolumn{2}{l}{\quad\emph{%
-      Merge adjacent blocks; optimizations around blocks.%
+      Merge adjacent blocks; optimisations around blocks.%
     }} \\\cline{2-3}
 2 & \texttt{beam\_except} & 255 \\
   & \multicolumn{2}{l}{\quad\emph{%
@@ -319,11 +319,11 @@ and the compiler proceeds to generate BEAM bytecode.
     }} \\\cline{2-3}
 3 & \texttt{beam\_jump} & 736 \\
   & \multicolumn{2}{l}{\quad\emph{%
-      Remove unreachable code, duplicate code; optimize jumps.%
+      Remove unreachable code, duplicate code; optimise jumps.%
     }} \\\cline{2-3}
 4 & \texttt{beam\_peep} & 219 \\
   & \multicolumn{2}{l}{\quad\emph{%
-      Peep-hole optimizations; removing redundant tests.%
+      Peep-hole optimisations; removing redundant tests.%
     }} \\\cline{2-3}
 5 & \texttt{beam\_clean} & 167 \\
   & \multicolumn{2}{l}{\quad\emph{%
@@ -334,11 +334,11 @@ and the compiler proceeds to generate BEAM bytecode.
       Stack trimming.
     }} \\\cline{2-3}
 \end{tabular}
-\caption{The optimizations performed on BEAM assembly by the
+\caption{The optimisations performed on BEAM assembly by the
 Erlang/OTP compiler. All modules are located in
 \texttt{lib/compiler/src}, and are called from the \texttt{compile}
 module, in the given order.  Line-counts are from Erlang/OTP version
 22.1; they give  a rough idea of where the majority of the work
 happens.}
-\label{tbl:asm-optimizations}
+\label{tbl:asm-optimisations}
 \end{table}
