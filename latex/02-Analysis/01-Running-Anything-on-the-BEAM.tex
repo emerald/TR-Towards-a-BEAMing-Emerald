@@ -264,6 +264,15 @@ argument, to explicitly indicate that the incoming file is a Core
 Erlang file. However, this argument is assumed for a \texttt{.core}
 file.
 
+\subsection{Kernel Erlang and SSA form}
+
+Kernel Erlang is a ``flat version'' of Core Erlang. Although
+\texttt{erlc} can produce Kernel Erlang code (usual file-extension:
+\texttt{.kernel}; use the option \texttt{+to\_kernel}), it cannot
+consume them. Kernel Erlang is not a serializable representation. It
+is still worth mentioning however, because of the compiler
+optimisations performed on it.
+
 \subsection{BEAM Assembly}
 
 BEAM is a garbage collected, reduction counting, non-preemptive,
