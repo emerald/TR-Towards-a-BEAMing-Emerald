@@ -183,6 +183,12 @@ module. The C module \texttt{erts/common/erlc.c} declares the actual
 entry-point for \texttt{erlc}, and interfaces with the above Erlang
 module via the \texttt{erts} C API.
 
+\item[\texttt{lib/compiler/src/cerl.erl}]~
+
+This module declares Core Erlang, an intermediate representation
+designed explicitly to be easy to optimise. It has a simpler syntax
+than standard Erlang, but retains its functional nature.
+
 \item[\texttt{lib/compiler/src/genop.tab}]~
 
 This file defines the generic BEAM instruction set. These definitions
