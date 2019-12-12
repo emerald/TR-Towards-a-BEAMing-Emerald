@@ -1,1 +1,159 @@
 \section{The Emerald Programming Model}
+
+In the Emerald world-view, a distributed system is a universe of
+\emph{objects}, distributed across a number of \emph{nodes}. An
+Emerald node is an instance of the Emerald \emph{runtime}, available
+at a particular network address. New nodes join the universe, by
+addressing some node already in it.
+
+Due to the nature of distributed systems however, nodes, and so the
+objects they house, may temporarily, or permanently become
+\emph{unavailable}, at any given time. Emerald nodes run on real
+hardware, in the context of real operating systems, and communicate
+over real networks. All these may misbehave unexpectedly, and the
+Emerald programming model attempts to accommodate Emerald programmers
+accordingly (more on this further below).
+
+Other than housing objects, an Emerald node may also be running a
+number of concurrent Emerald \emph{processes}. An Emerald process
+executes a program-defined sequence of Emerald \emph{operations},
+which can be fundamentally segregated as follows:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item Execute a built-in function / basic operation
+\label{enum:op:builtin}
+
+\item Invoke a method on an object (local or remote)
+\label{enum:op:invoke}
+
+\end{enumerate}
+
+Despite a clear runtime difference between remote, and local method
+invocation, Emerald does not draw a syntactic difference between the
+two. To this effect, Emerald source code is location transparent, and
+it is up to the Emerald runtime(s) to deliver on this syntactical
+illusion.
+
+The body of a method (local or remote) is again a sequence of
+operations of the kinds (1) and (2). As in many other languages,
+operations of kind \ref{enum:op:builtin} perform basic computational
+tasks, and interact with the surrounding operating system. However,
+there are also some notable basic operations in Emerald:
+
+\begin{enumerate}[label=(1\alph*)]
+
+\item List currently available nodes
+
+\item Suggest that an object (local or remote) is moved to a specific
+node \label{enum:op:move}
+
+\item Try and fix an object at a specific node \label{enum:op:fix}
+
+\item Try and unfix an object, so that it can move about again
+\label{enum:op:unfix}
+
+\item Instantiate a new object at the current node \label{enum:op:new}
+
+\end{enumerate}
+
+\subsection{Mobility}
+
+Objects in the Emerald universe are not (initially) fixed at the nodes
+where they are instantiated --- they can roam about the Emerald
+universe, throughout their lifetime. Programmers can exert some
+control over their movement, but mostly, they can merely guide it ---
+it is up to the Emerald runtime(s) to actually decide what moves,
+where, and when.
+
+In particular, operations of kind \ref{enum:op:move} provide a
+\emph{hint} to the Emerald runtime, that it might be a good idea to
+move an object there and then. Operations of kind \ref{enum:op:fix}
+mandate that an object is moved to a given node, that instant, and
+that it stays there until it is ``unfixed''. However, the object is
+only moved (and fixed), provided that the target node is still
+available, and that the move happens within reasonable time.
+Similarly, an operation of kind \ref{enum:op:unfix} succeeds only if
+the given object (i.e., the node it is resident on) is still
+available.
+
+The possibility of failure that plagues operations of kinds
+\ref{enum:op:fix} and \ref{enum:op:unfix}, also plagues operations of
+kind \ref{enum:op:invoke}: A remote method invocation may fail due to
+the target object being unavailable. The lack of a syntactic
+distinction between remote and local method invocations, and lax
+control over object movement means that method invocation, without
+further care, may fail unexpectedly.
+
+\subsection{Fault Tolerance}
+
+In distributed systems, all sorts of things can fail, and our programs
+must be prepared. To this end, the Emerald programming model banks on
+an \emph{unavailability}-handling mechanism. This works similar to
+exception-handling in non-distributed programming models: The
+programmer can wrap a sequence of Emerald operations into a block, and
+attach an unavailability handler to it. If any of the operations fail
+due to the unavailability of a node (or object), control is first
+handed over to the unavailability handler, and then outside the block.
+
+\subsection{Processes and Their Mobility}
+
+Operations of kind \ref{enum:op:new} are notable because they may
+spawn new processes.
+
+There are two kinds of processes in Emerald: \emph{start-} and
+\emph{spawned} processes. A start-process starts when a new node is
+started, with a specific Emerald compilation unit to execute. It stops
+after having executed the operations mandated by the compilation unit.
+The operations of a spawned process are declared together with an
+object type, and a process is spawned whenever an object of that type
+is instantiated.  This process is then tied to the said object. If the
+object moves, so does the process. Hence, both objects and (spawned)
+processes can roam about in a universe of Emerald nodes.
+
+\subsection{Fine-Grained Mobility}
+
+As with ``objects'' in other languages, Emerald objects are first and
+foremost structures of data.  Furthermore, as in only \emph{some}
+other languages with ``objects'', in Emerald (almost) everything is an
+object. Hence, an Emerald object is really more a structure of
+references (to other objects), than a structure of data.
+
+By default, when this ``structure of references'' moves, it is up to
+the run-time to decide whether the objects it refers to move with it.
+However, references can be explicitly marked as \emph{attached}, and
+attached objects always move together with the object(s) they're
+attached to.
+
+Attaching references can be important to the correct and efficient
+functioning of an object. Attached objects always reside on the same
+node, and so working with only attached objects can never lead to
+remote method invocations. Such code has predictable performance and
+cannot fail due to the unavailability of some other node.
+
+% The only thing that can happen in such a start-process is that a
+% number of objects are instantiated, and assigned process-local
+% names. Objects instantiated later, can then refer to objects
+% instantiated earlier in the start-process. More interestingly
+% however, as part of the instantiation of any object in Emerald, a
+% new process may be spawned.  Hence, while perhaps starting with a
+% single start-process, an Emerald node can go on to execute many
+% processes \emph{concurrently}.
+
+% If stated with a start-process, a node stays alive long enough to
+% execute all of its effective processes. If started without a
+% start-process, the node stays alive indefinitely, perpetually
+% awaiting work from other nodes. Such ``work'' is sent along by
+% moving around Emerald objects, and their associated processes.
+
+% An object is always instantiated at a particular node, but can roam
+% about, throughout its lifetime; and die anywhere. The process,
+% possibly instantiated as part of the initialization of an object, is
+% tied to this object. If the object moves, so does the process.
+
+% An Emerald object is alive so long as some Emerald process,
+% somewhere, retains a reference to it. For these, effectively
+% free-range, Emerald objects to communicate, they do not need to
+% explicitly keep track of each other's location --- this is done
+% automatically by the Emerald runtimes involved. This makes Emerald
+% code \emph{location-transparent}.
