@@ -143,29 +143,11 @@ node, and so working with only attached objects can never lead to
 remote method invocations. Such code has predictable performance and
 cannot fail due to the unavailability of some other node.
 
-% The only thing that can happen in such a start-process is that a
-% number of objects are instantiated, and assigned process-local
-% names. Objects instantiated later, can then refer to objects
-% instantiated earlier in the start-process. More interestingly
-% however, as part of the instantiation of any object in Emerald, a
-% new process may be spawned.  Hence, while perhaps starting with a
-% single start-process, an Emerald node can go on to execute many
-% processes \emph{concurrently}.
-
 % If stated with a start-process, a node stays alive long enough to
 % execute all of its effective processes. If started without a
 % start-process, the node stays alive indefinitely, perpetually
 % awaiting work from other nodes. Such ``work'' is sent along by
 % moving around Emerald objects, and their associated processes.
 
-% An object is always instantiated at a particular node, but can roam
-% about, throughout its lifetime; and die anywhere. The process,
-% possibly instantiated as part of the initialization of an object, is
-% tied to this object. If the object moves, so does the process.
-
 % An Emerald object is alive so long as some Emerald process,
-% somewhere, retains a reference to it. For these, effectively
-% free-range, Emerald objects to communicate, they do not need to
-% explicitly keep track of each other's location --- this is done
-% automatically by the Emerald runtimes involved. This makes Emerald
-% code \emph{location-transparent}.
+% somewhere, retains a reference to it.
