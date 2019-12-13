@@ -56,7 +56,7 @@ message from the inbox
 
 \end{description}
 
-\subsection{Receiving Messages}
+\subsection*{Receiving Messages}
 
 It is notable that actors are not interrupted upon the arrival of a
 message. They must explicitly issue \textbf{receive} operations, when
@@ -80,7 +80,7 @@ prioritization mechanism, where less important messages are not
 repeatedly inspected, programmers must employ multiple cooperating
 actors.
 
-\subsection{Sending Messages}
+\subsection*{Sending Messages}
 
 To \textbf{send} a message to an actor, we must hold a reference to it.
 The \textbf{spawn}-operations yield such references, and they can be
@@ -96,7 +96,7 @@ it into a message, issues a \textbf{send} operation, and can goes on
 to do more important things. If instead the actor expects a subsequent
 reply, it must employ subsequent \textbf{receive} operations.
 
-\subsection{Fault Tolerance}
+\subsection*{Fault Tolerance}
 
 By default, the sender is not notified in any way about what happens
 with the receiver. However, a connection between two actors can be
@@ -110,7 +110,7 @@ spawning an actor, using variants of the \textbf{spawn}-operations, as
 well as some other \textbf{basic} operations; neither are listed here
 for brevity.
 
-\subsection{Residency and Concurrency}
+\subsection*{Residency and Concurrency}
 
 Erlang actors are fixed at the nodes where they are spawned. However,
 they can communicate with actors resident on other nodes. There is no
@@ -129,7 +129,7 @@ only way to share data in Erlang, is by message-passing. Effectively,
 this also eliminates the possibility of race conditions in general,
 but does add some overhead to sharing data locally.
 
-\subsection{Dynamic Typing}
+\subsection*{Dynamic Typing}
 
 Since message passing is a basic communication primitive, and any
 actor can send any message to any other actor, messages carry their

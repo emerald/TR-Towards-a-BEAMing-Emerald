@@ -57,7 +57,7 @@ node \label{enum:op:move}
 
 \end{enumerate}
 
-\subsection{Mobility}
+\subsection*{Mobility}
 
 Objects in the Emerald universe are not (initially) fixed at the nodes
 where they are instantiated --- they can roam about the Emerald
@@ -85,7 +85,7 @@ distinction between remote and local method invocations, and lax
 control over object movement means that method invocation, without
 further care, may fail unexpectedly.
 
-\subsection{Fault Tolerance}
+\subsection*{Fault Tolerance}
 
 In distributed systems, all sorts of things can fail, and our programs
 must be prepared. To this end, the Emerald programming model banks on
@@ -96,7 +96,7 @@ attach an unavailability handler to it. If any of the operations fail
 due to the unavailability of a node (or object), control is first
 handed over to the unavailability handler, and then outside the block.
 
-\subsection{Processes, Process Mobility, and Concurrency}
+\subsection*{Processes, Process Mobility, and Concurrency}
 
 Operations of kind \ref{enum:op:new} are notable because they may
 spawn new processes.
@@ -123,7 +123,7 @@ Emerald programming model allows for objects to be marked as
 ``monitors'' in the classical sense: only one process may invoke a
 method of a monitor object at a time.
 
-\subsection{Fine-Grained Mobility}
+\subsection*{Fine-Grained Mobility}
 
 As with ``objects'' in other languages, Emerald objects are first and
 foremost structures of data.  Furthermore, as in only \emph{some}
@@ -143,7 +143,7 @@ node, and so working with only attached objects can never lead to
 remote method invocations. Such code has predictable performance and
 cannot fail due to the unavailability of some other node.
 
-\subsection{Static Typing}
+\subsection*{Static Typing}
 
 Last, but not least, Emerald employs a statically-typed programming
 model. This means that while method invocation may fail due to node
