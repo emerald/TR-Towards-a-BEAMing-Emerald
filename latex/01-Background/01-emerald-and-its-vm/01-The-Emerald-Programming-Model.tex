@@ -143,6 +143,18 @@ node, and so working with only attached objects can never lead to
 remote method invocations. Such code has predictable performance and
 cannot fail due to the unavailability of some other node.
 
+\subsection{Static Typing}
+
+Last, but not least, Emerald employs a statically-typed programming
+model. This means that while method invocation may fail due to node
+unavailability, or a runtime exception, it will never fail due to
+use of invalid data types.
+
+The extent of these benefits depends, of course, on the richness of
+the Emerald type-system. The fact that runtime exceptions can still
+happen is unpleasant, but it is doubtful if they can ever be
+eliminated completely.
+
 % If stated with a start-process, a node stays alive long enough to
 % execute all of its effective processes. If started without a
 % start-process, the node stays alive indefinitely, perpetually
