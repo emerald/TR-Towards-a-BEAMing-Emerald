@@ -1,4 +1,143 @@
 \section{The Erlang Programming Model}
 
-The basic compilation unit in Erlang is a module. A module has a name;
-it declares a number of functions, some of which may be exported.
+% Perhaps Methodology, rather than Model?
+
+% The basic compilation unit in Erlang is a module. A module has a
+% name; it declares a number of functions, some of which may be
+% exported.
+
+In the Erlang world-view, a distributed system is a universe of
+\emph{actors}, segregated among a number of \emph{nodes}. An Erlang
+node is an instance of the Erlang \emph{runtime system}, available at
+a particular network address. New nodes join the universe, by
+addressing some node already in it.
+
+Erlang nodes run on real hardware, in the context of real operating
+systems, and communicate over real networks. All these may fail
+unexpectedly, and Erlang nodes may temporarily, or permanently become
+\emph{unavailable}. The Erlang programming model attempts to
+accommodate Erlang programmers accordingly (more on this below).
+
+An Erlang actor is a light-weight Erlang \emph{process}, executing a
+sequence of Erlang \emph{functions}. An Erlang function is written in
+functional programming style, and a function can terminate by
+tail-recursively calling another function. An Erlang actor/process
+terminates when no such tail-recursive call is made.
+
+Furthermore, an Erlang actor maintains an \emph{inbox} for messages
+from other actors. Any actor can send any kind of message to any other
+actor they have a reference to (Erlang is dynamically typed). An actor
+processes its inbox at its leisure, at its own pace. Fundamentally, an
+Erlang actor executes a sequence of Erlang \emph{operations}, which
+can be segregated as follows:
+
+\begin{description}
+
+\item[\textbf{basic}]\ \\ Execute a built-in function / basic
+operation
+
+\item[\textbf{call}]\ \\ Call a programmer-specified function and wait
+for the result
+
+\item[\textbf{tailcall}]\ \\ Pass control to another
+programmer-specified function
+
+\item[\textbf{spawn\_local}]\ \\ Spawn a new process (actor) to execute
+a given function
+
+\item[\textbf{spawn\_remote}]\ \\ Spawn a new process (actor) at
+another node to execute a given function
+
+\item[\textbf{send}]\ \\ Send a message to some actor's inbox (can be
+own inbox)
+
+\item[\textbf{receive}]\ \\ Wait for, and take out the first matching
+message from the inbox
+
+\end{description}
+
+\subsection{Receiving Messages}
+
+It is notable that actors are not interrupted upon the arrival of a
+message. They must explicitly issue \textbf{receive} operations, when
+ready. Hence, messages will build up in the inbox if an actor doesn't
+regularly empty it. Luckily, there isn't much an actor can do without
+interacting with other actors.
+
+Furthermore, less important messages can build up in the inbox, while
+an actor is working to respond to more important messages. In
+particular, the \textbf{receive} operation does not simply take out
+the top message, but iterates over the messages, in order of their
+arrival, and takes out the first matching message, once such a message
+arrives. A \textbf{receive} operation is a \emph{blocking} operation,
+but can be suspended after a given timeout.
+
+It follows, that the programmer has good control over how the inbox is
+processed, with a few notable exceptions: \begin{inparaenum}\item[(a)]
+an actor has exactly one inbox; and \item[(b)] messages are processed
+in order of arrival\end{inparaenum}.  Hence, to implement an efficient
+prioritization mechanism, where less important messages are not
+repeatedly inspected, programmers must employ multiple cooperating
+actors.
+
+\subsection{Sending Messages}
+
+To \textbf{send} a message to an actor, we must hold a reference to it.
+The \textbf{spawn}-operations yield such references, and they can be
+passed around like any other datatype. Perhaps surprisingly, received
+messages are not decorated with a reference to the sender. If the
+sender expects a reply, the sender must pack a reference to itself (or
+another actor), inside the message.
+
+A \textbf{send} operation is \emph{non-blocking} --- the Erlang
+runtime system does not wait around for the message to be delivered,
+or wait around for a reply. If an actor has something to say, it packs
+it into a message, issues a \textbf{send} operation, and can goes on
+to do more important things. If instead the actor expects a subsequent
+reply, it must employ subsequent \textbf{receive} operations.
+
+\subsection{Fault Tolerance}
+
+By default, the sender is not notified in any way about what happens
+with the receiver. However, a connection between two actors can be
+established, such that one is notified when the other becomes
+unavailable (i.e., the process terminates, the host Erlang runtime
+system stops, or the connection is lost).
+
+When an actor \textbf{receive}s a notification of another's death, it
+may respond as it sees fit. This connection can be established when
+spawning an actor, using variants of the \textbf{spawn}-operations, as
+well as some other \textbf{basic} operations; neither are listed here
+for brevity.
+
+\subsection{Residency and Concurrency}
+
+Erlang actors are fixed at the nodes where they are spawned. However,
+they can communicate with actors resident on other nodes. There is no
+syntactic difference between communicating with a local, and a remote
+actor. The only syntactic difference lies in how such actors are
+spawned\footnote{Vis-a-vis the \textbf{spawn} operations above.}.
+
+It is safe to say that Erlang is location transparent. However, since
+actors do not move, it is also easy to segregate local and remote
+actors, and one can keep their location in mind when communicating
+with them.
+
+In support of the location transparency illusion (among other reason),
+actors that reside on the same node, use separate address spaces. The
+only way to share data in Erlang, is by message-passing. Effectively,
+this also eliminates the possibility of race conditions in general,
+but does add some overhead to sharing data locally.
+
+\subsection{Dynamic Typing}
+
+Since message passing is a basic communication primitive, and any
+actor can send any message to any other actor, messages carry their
+type at runtime. This entails runtime costs, and code may fail at
+runtime due to ill-formed messages. However, this does offer ease of
+entry-level programming and flexibility.
+
+Although there are some tools for the static analysis of Erlang
+programs, to find type-errors before they happen at runtime, these
+tools do not strip the runtime types. Hence, Erlang in general, is
+dynamically typed.
